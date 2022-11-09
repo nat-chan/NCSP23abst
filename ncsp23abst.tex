@@ -1,0 +1,113 @@
+\documentclass[a4paper]{article}
+\usepackage[colorlinks, urlcolor=blue,
+	pdffitwindow, bookmarksopen,
+	filecolor=blue,
+	bookmarksopenlevel=0,
+	pdfpagelayout=SinglePage, dvipdfm]{hyperref}
+\usepackage{ncsp20} %% !! Strongly recommended to use it
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{here}
+\usepackage{caption}
+\usepackage{indentfirst}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{showframe}
+\geometry{left=20mm,right=20mm,top=0mm,bottom=10mm}
+
+% {{{
+% 2段組み環境内でfigure環境
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
+  
+%セクションの前後の空白を詰める
+\newcommand{\aftersection}{\vspace{-5pt}}
+\newcommand{\beforesection}{\vspace{-10pt}}
+\newcommand{\beforecaption}{\vspace{-10pt}}
+
+% }}}
+
+\begin{document}
+\name{} \address{} %\titleがncsp20でrenewcommandされているので空文字にする
+\title{Aesthetic and high-following line art colorization}
+%\title{Aesthetic and robust colorization for rough sketches}
+\maketitle
+\vspace{-80pt} % XXX タイトルと本文の間を詰める
+
+\begin{center}
+    \begin{tabular}[t]{c}
+    {\large Natsuki Ogino}\footnotemark[1]
+    \and 
+    {\large Kazumasa Horie}\footnotemark[2]
+    \and 
+    {\large Amagasa Toshiyuki}\footnotemark[2]
+    \end{tabular}
+\end{center}
+\footnotetext[1]{
+Graduate School of Science and Technology Degree Programs, University of Tsukuba, 1-1-1 Tennodai, Tsukuba, Ibaraki, 305-8577, Japan.\\
+\hspace{4.5mm} E-mail: ogino.natsuki.tm@alumni.tsukuba.ac.jp}
+\footnotetext[2]{
+Center for Computational Sciences, University of Tsukuba, 1-1-1 Tennodai, Tsukuba, Ibaraki, 305-8577, Japan.\\
+\hspace{4.5mm} Phone: 029-855-5385
+E-mail: \{horie, amagasa\}@cs.tsukuba.ac.jp}
+
+\newcommand{\mypt}{11.6pt}
+\newcommand{\mythh}[2]{ \scalebox{0.5}{\begin{tabular}{c} {\fontsize{\mypt}{\mypt}\selectfont #1} \\ {\fontsize{\mypt}{\mypt}\selectfont #2} \end{tabular}} }
+\newcommand{\mythhh}[3]{ \scalebox{0.5}{\begin{tabular}{c} {\fontsize{\mypt}{\mypt}\selectfont #1} \\ {\fontsize{\mypt}{\mypt}\selectfont #2} \\ {\fontsize{\mypt}{\mypt}\selectfont #3} \end{tabular}} }
+\newcommand{\mytd}[1]{ \includegraphics[height=.05\textheight,valign=b]{#1}}
+
+\vspace{-10pt}
+\begin{table}[hbtp]
+\begin{tabular}{@{}c@{}|@{}c@{}|@{}c@{}|@{}c@{}|@{}c@{}|@{}c@{}|@{}c@{}|@{}c@{}|@{}c@{}|@{}c@{}|@{}c@{}}
+\mythh{Reference image}{for colorization}&
+\mythhh{Line drawing}{extraction source}{image}&
+\mythh{Line drawing}{image input}&
+\mythhh{Ours}{DF-projection}{w/ref}&
+\mythhh{Baseline}{pixel2style2pixel}{w/ref}&
+\mythh{style2paints v4.5}{w/ref}&
+\mythhh{Pixiv(PFN)}{Petalica Paint}{Tanpopo wo/ref}&
+\mythhh{Pixiv(PFN)}{Petalica Paint}{Satsuki wo/ref }&
+\mythhh{Pixiv(PFN)}{Petalica Paint}{Canna wo/ref}&
+\mythh{NAVER Webtoon}{AI Painter wo/ref}&
+\mythhh{Celsys}{ClipStudioPaint}{v1.12.8 wo/ref}
+\\ \hline
+\mytd{examples/synth/seed2117.png} & \mytd{examples/synth/seed0060.png} & \mytd{examples/sim/seed0060.png} & \mytd{grid100ref/dist_weight=0.3_additional_weight=0.7_custom_lr=0.05_w_std=0.7/3.png}  & \mytd{examples/sim_synth/60_2117.png}   & \mytd{examples/pair50/3/a.png}  & \mytd{examples/petalica/t3.jpg}  & \mytd{examples/petalica/s3.jpg}  & \mytd{examples/petalica/c3.jpg}  & \mytd{examples/webtoon/3_ai-painter.png}  & \mytd{examples/clipstudio/3.png}  \\ \hline
+\mytd{examples/synth/seed2133.png} & \mytd{examples/synth/seed0092.png} & \mytd{examples/sim/seed0092.png} & \mytd{grid100ref/dist_weight=0.3_additional_weight=0.7_custom_lr=0.05_w_std=0.7/5.png}  & \mytd{examples/sim_synth/92_2133.png}   & \mytd{examples/pair50/5/a.png}  & \mytd{examples/petalica/t5.jpg}  & \mytd{examples/petalica/s5.jpg}  & \mytd{examples/petalica/c5.jpg}  & \mytd{examples/webtoon/5_ai-painter.png}  & \mytd{examples/clipstudio/5.png}  \\ \hline
+\mytd{examples/synth/seed3337.png} & \mytd{examples/synth/seed2061.png} & \mytd{examples/sim/seed2061.png} & \mytd{grid100ref/dist_weight=0.3_additional_weight=0.7_custom_lr=0.05_w_std=0.7/48.png} & \mytd{examples/sim_synth/2061_3337.png} & \mytd{examples/pair50/48/a.png} & \mytd{examples/petalica/t48.jpg} & \mytd{examples/petalica/s48.jpg} & \mytd{examples/petalica/c48.jpg} & \mytd{examples/webtoon/48_ai-painter.png} & \mytd{examples/clipstudio/48.png} 
+\end{tabular}
+\beforecaption
+\caption{Colorization results of proposed, baseline, and comparative methods}
+\label{tab:compare}
+\end{table}
+
+
+\vspace{-25pt}
+\begin{multicols}{2}
+\section*{Objective}
+\aftersection
+Technology for automatically applying aesthetic coloring to line drawings is in high demand for applications that support illustrators' work. However, the results of previous methods are often flat, and are far from beautifully finished illustrations. They are also not robust to rough line drawings. Recently, a new general-purpose img2img work frame using StyleGAN as a decoder, called pixel2style2pixel, has been proposed. Using this method for this task seemed to solve the above problems. However, we found that the method lost the ability to follow the input line drawing. There is a trade-off between the aesthetic quality of the coloring result and the ability to follow the input line drawing. This research aims to improve this trade-off.
+\beforesection
+\section*{Methods}
+\aftersection
+todo
+
+\beforesection
+\section*{Results}
+\aftersection
+todo
+
+\beforesection
+\section*{Conclusions}
+\aftersection
+
+todo
+
+% Reference
+\begin{thebibliography}{9}
+\bibitem{psp}
+Richardson, et al., "Encoding in Style: a StyleGAN Encoder for Image-to-Image Translation", Proceedings of Computer Vision and Pattern Recognition, 2021. 
+\end{thebibliography}
+
+\end{multicols}\end{document}

@@ -1,0 +1,93 @@
+{
+    // ---------- Language ----------
+
+    "[tex]": {
+        // スニペット補完中にも補完を使えるようにする
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        // インデント幅を4にする
+        "editor.tabSize": 4
+    },
+
+    "[latex]": {
+        // スニペット補完中にも補完を使えるようにする
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        // インデント幅を4にする
+        "editor.tabSize": 4
+    },
+
+    "[bibtex]": {
+        // インデント幅を4にする
+        "editor.tabSize": 4
+    },
+
+
+    // ---------- LaTeX Workshop ----------
+
+    // 使用パッケージのコマンドや環境の補完を有効にする
+    "latex-workshop.intellisense.package.enabled": true,
+
+    // 生成ファイルを削除するときに対象とするファイル
+    // デフォルト値に "*.synctex.gz" を追加
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux",
+        "*.bbl",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.ist",
+        "*.fls",
+        "*.log",
+        "*.fdb_latexmk",
+        "*.snm",
+        "*.nav",
+        "*.dvi",
+        "*.synctex.gz"
+    ],
+
+//    // 生成ファイルを "out" ディレクトリに吐き出す
+//    "latex-workshop.latex.outDir": "out",
+
+    // ビルドのレシピ
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "platex",
+            "tools": [
+                "platex",
+                "dvipdfmx",
+            ]
+        },
+    ],
+
+    // ビルドのレシピに使われるパーツ
+    "latex-workshop.latex.tools": [
+        {
+            "name": "platex",
+            "command": "platex",
+            "args": [
+                "-interaction",
+                "nonstopmode",
+                "-halt-on-error",
+                "-file-line-error",
+ //               "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+        },
+        {
+            "name": "dvipdfmx",
+            "command": "dvipdfmx",
+            "args": [
+                "%DOC%"
+            ],
+        },
+    ],
+}
