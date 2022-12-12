@@ -15,7 +15,7 @@
 \usepackage[export]{adjustbox}
 %\usepackage{showframe}
 \usepackage{amsmath}
-\geometry{left=18mm,right=18mm,top=0mm,bottom=10mm}
+\geometry{left=15mm,right=15mm,top=0mm,bottom=10mm}
 
 % {{{
 % 2段組み環境内でfigure環境
@@ -32,7 +32,9 @@
 
 \begin{document}
 \name{} \address{} %\titleがncsp20でrenewcommandされているので空文字にする
-\title{Aesthetic and high-following line art colorization}
+  \title{Sketch2character: Aesthetic and high-following line art colorization using StyleGAN decoder}
+%titleをusing なんちゃら
+% sketch2character: Deeplearning method for Aesthetic and high-following line art colorization {optional using なんちゃら}
 %\title{Aesthetic and robust colorization for rough sketches}
 \maketitle
 \vspace{-80pt} % XXX タイトルと本文の間を詰める
@@ -55,8 +57,10 @@ Center for Computational Sciences, University of Tsukuba, 1-1-1 Tennodai, Tsukub
 E-mail: \{horie, amagasa\}@cs.tsukuba.ac.jp}
 
 \newcommand{\mypt}{12.1pt}
+\newcommand{\myth}[1]{ \scalebox{0.5}{\begin{tabular}{c} {\fontsize{\mypt}{\mypt}\selectfont #1} \end{tabular}} }
 \newcommand{\mythh}[2]{ \scalebox{0.5}{\begin{tabular}{c} {\fontsize{\mypt}{\mypt}\selectfont #1} \\ {\fontsize{\mypt}{\mypt}\selectfont #2} \end{tabular}} }
 \newcommand{\mythhh}[3]{ \scalebox{0.5}{\begin{tabular}{c} {\fontsize{\mypt}{\mypt}\selectfont #1} \\ {\fontsize{\mypt}{\mypt}\selectfont #2} \\ {\fontsize{\mypt}{\mypt}\selectfont #3} \end{tabular}} }
+\newcommand{\mythhhh}[4]{ \scalebox{0.5}{\begin{tabular}{c} {\fontsize{\mypt}{\mypt}\selectfont #1} \\ {\fontsize{\mypt}{\mypt}\selectfont #2} \\ {\fontsize{\mypt}{\mypt}\selectfont #3}  \\ {\fontsize{\mypt}{\mypt}\selectfont #4} \end{tabular}} }
 \newcommand{\mytd}[1]{ \includegraphics[height=.05\textheight,valign=b]{#1}}
 
 \vspace{-10pt}
@@ -65,7 +69,7 @@ E-mail: \{horie, amagasa\}@cs.tsukuba.ac.jp}
 \mythh{Reference image}{for colorization}&
 \mythhh{Line drawing}{extraction source}{image}&
 \mythh{Line drawing}{image input}&
-\mythhh{Ours}{DF-projection}{w/ref}&
+\mythhh{\textbf{Ours}}{\textbf{DF-projection}}{\textbf{w/ref}}&
 \mythhh{Baseline}{pixel2style2pixel}{w/ref}&
 \mythh{style2paints v4.5}{w/ref}&
 \mythhh{Pixiv(PFN)}{Petalica Paint}{Tanpopo wo/ref}&
@@ -76,10 +80,21 @@ E-mail: \{horie, amagasa\}@cs.tsukuba.ac.jp}
 \\ \hline
 \mytd{examples/synth/seed2117.png} & \mytd{examples/synth/seed0060.png} & \mytd{examples/sim/seed0060.png} & \mytd{grid100ref/dist_weight=0.3_additional_weight=0.7_custom_lr=0.05_w_std=0.7/3.png}  & \mytd{examples/sim_synth/60_2117.png}   & \mytd{examples/pair50/3/a.png}  & \mytd{examples/petalica/t3.jpg}  & \mytd{examples/petalica/s3.jpg}  & \mytd{examples/petalica/c3.jpg}  & \mytd{examples/webtoon/3_ai-painter.png}  & \mytd{examples/clipstudio/3.png}  \\ \hline
 \mytd{examples/synth/seed2133.png} & \mytd{examples/synth/seed0092.png} & \mytd{examples/sim/seed0092.png} & \mytd{grid100ref/dist_weight=0.3_additional_weight=0.7_custom_lr=0.05_w_std=0.7/5.png}  & \mytd{examples/sim_synth/92_2133.png}   & \mytd{examples/pair50/5/a.png}  & \mytd{examples/petalica/t5.jpg}  & \mytd{examples/petalica/s5.jpg}  & \mytd{examples/petalica/c5.jpg}  & \mytd{examples/webtoon/5_ai-painter.png}  & \mytd{examples/clipstudio/5.png}  \\ \hline
-\mytd{examples/synth/seed3337.png} & \mytd{examples/synth/seed2061.png} & \mytd{examples/sim/seed2061.png} & \mytd{grid100ref/dist_weight=0.3_additional_weight=0.7_custom_lr=0.05_w_std=0.7/48.png} & \mytd{examples/sim_synth/2061_3337.png} & \mytd{examples/pair50/48/a.png} & \mytd{examples/petalica/t48.jpg} & \mytd{examples/petalica/s48.jpg} & \mytd{examples/petalica/c48.jpg} & \mytd{examples/webtoon/48_ai-painter.png} & \mytd{examples/clipstudio/48.png} 
+\mytd{examples/synth/seed3337.png} & \mytd{examples/synth/seed2061.png} & \mytd{examples/sim/seed2061.png} & \mytd{grid100ref/dist_weight=0.3_additional_weight=0.7_custom_lr=0.05_w_std=0.7/48.png} & \mytd{examples/sim_synth/2061_3337.png} & \mytd{examples/pair50/48/a.png} & \mytd{examples/petalica/t48.jpg} & \mytd{examples/petalica/s48.jpg} & \mytd{examples/petalica/c48.jpg} & \mytd{examples/webtoon/48_ai-painter.png} & \mytd{examples/clipstudio/48.png} \\ \hline
+
+&&\mythhhh{\textbf{AestheticWP↑}}{\textbf{DF-RMSE↓}}{SSIM↑}{PSNR↑}&
+\mythhhh{38\%}{12.17}{0.49}{11.43}&
+\mythhhh{100-x\%}{13.56}{0.50}{11.59}&
+\mythhhh{24\%}{4.44}{0.70}{12.73}&
+\mythhhh{4\%}{5.65}{0.73}{14.01}&
+\mythhhh{10\%}{1.77}{0.67}{11.70}&
+\mythhhh{6\%}{7.00}{0.65}{11.74}&
+\mythhhh{6\%}{4.16}{0.65}{11.53}&
+\mythhhh{6\%}{2.70}{0.68}{11.80}\\
+
 \end{tabular}
 \beforecaption
-\captionof{figure}{Colorization results of proposed, baseline, and comparative methods}
+\captionof{figure}{Colorization and Quantitative evaluation results of proposed, baseline, and comparative methods}
 \label{tab:compare}
 \end{table}
 
@@ -88,10 +103,19 @@ E-mail: \{horie, amagasa\}@cs.tsukuba.ac.jp}
 \begin{multicols}{2}
 \section*{Objective}
 \aftersection
-
-Technology for automatically applying aesthetic coloring to line drawings is in high demand for applications that support illustrators' work. 
-%However, the results of previous methods are often flat and are far from beautifully finished illustrations. They are also not robust to rough line drawings.
-Recently, a new general-purpose img2img work frame using StyleGAN as a decoder, called pixel2style2pixel(pSp), has been proposed. Using this method for this task solved the above problems. However, we found that the method lost the ability to follow the input line drawing. There is a trade-off between the aesthetic quality of the coloring result and the ability to follow the input line drawing. This research aims to improve this trade-off.
+%問題解決
+Technology for automatically applying aesthetic coloring to line drawings is in high demand for applications that support professional illustrators' work. 
+However, the results of previous methods are often flat and are far from beautifully finished illustrations.
+%They are also not robust to rough line drawings.
+Recently, a new general-purpose img2img work frame using StyleGAN as a decoder, called pixel2style2pixel~\cite{psp}, has been proposed. Using this method for this task solved the above problems. However, we found that the method lost the ability to follow the input line drawing. There is a trade-off between the aesthetic quality of the coloring result and the ability to follow the input line drawing.
+This research aims to balance these two conflicting relationships.
+% to develop search system has to fullfyll to following 
+% 先の条件を達成しなければならない
+% これから解決すべき課題を明確にする
+% 美しいこと　線画の追従性が高いこと
+% s2p の足りないこと
+% base の足りないこと
+% どのように解決するか，pspの主張をベースに新しいロス関数を導入することで上記の二つの両立を測ります．
 
 \beforesection
 \section*{Methods}
@@ -103,63 +127,39 @@ Recently, a new general-purpose img2img work frame using StyleGAN as a decoder, 
 \frac{1}{HW}\sum_{h,w}\left({\rm DF \circ S\circ G}(w^+_{start}+w_{opt})-{\rm DF \circ S}(I_{target})\right)^2
 \end{align*}
 \normalsize
-
+%具体的に本研究で導入するのは以下の
 In this study, we introduced a new metric, DF-MSE, which is expressed in the above equation, as a measure of the followability to the input line art. It measures the degree of matching between the line drawing extracted from the generated image and the input line drawing. In order to adapt to the diversity of sketches created by users, the model Simplify(S) is used to normalize line thickness and density and then converted to a Distance Field, and pixel-wise MSE is calculated. Conventional studies of line drawing coloring use SSIM and PSNR indices to measure the fidelity of the coloring process, using both human-colored and model-colored images. However, using these indices to measure line drawing fidelity causes problems, such as sensitivity to visually unrecognizable one-pixel deviations and local scaling. Therefore, this problem is solved by converting each pixel in the image into a distance to the nearest line.
 
-We used the Aesthetic score predictor to evaluate and compare the aesthetics of the coloring results. We conducted an AB test of the generated images' aesthetics to verify this metric's accuracy. It was confirmed that the Aesthetic score predictor has the same level of sensitivity to aesthetics as a human subject with average sensitivity. Additionally, this metric has been used in prestigious publications such as stable-diffusion.
+We used the Aesthetic score predictor~\cite{aes} to evaluate and compare the aesthetics of the coloring results. We conducted an AB test of the generated images' aesthetics to verify this metric's accuracy. It was confirmed that the Aesthetic score predictor has the same level of sensitivity to aesthetics as a human subject with average sensitivity.
+%Additionally, this metric has been used in prestigious publications such as stable-diffusion.
 
 The architecture of the proposed method is described in detail. We propose a new architecture, DF-projection, which uses the $w^+$ vector obtained from the encoder of the baseline method pixel2style2pixel as the initial point and the DF-MSE mentioned above as the weighted loss to project into the StyleGAN latent space.
-
-
-%\tiny
-%\begin{align*}
-%\mathcal{L}_{{\rm DF}}&=\frac{1}{HW}\sum_{h,w}\left({\rm DF \circ S\circ \underset{synth}{G}}(w^+_{start}+w_{opt})-{\rm DF \circ S}(I_{target})\right)^2
-%\\
-%\mathcal{L}_{{\rm VGG}}&=\sum_{feature\ wise}\left({\rm VGG \circ \underset{synth}{G}}(w^+_{start}+w_{opt})-{\rm VGG}(I_{target})\right)^2
-%\\
-%\mathcal{L}_{{\rm project}} &= \lambda_{{\rm DF}} \mathcal{L}_{{\rm DF}} + (1-\lambda_{{\rm DF}})\mathcal{L}_{{\rm VGG}}+\lambda_{{\rm reg}}\mathcal{L}_{{\rm reg}}
-%\end{align*}
-%\normalsize
-
 
 \beforesection
 \section*{Results}
 \aftersection
 
-To evaluate the performance of the proposed method, we conducted experiments comparing it with the baseline method, the proposed method, and a coloring method already in use in practice. We prepared 80,000 training, 2,000 validation, and 2,000 test dataset by the following procedure: removing images using a tag that was not appropriate for research, whitening the background, aligning faces, and extracting line drawings from the Danbooru2020 dataset. Since obtaining permission to publish these images in a paper was difficult, We prepared 100 pairs of images generated by StyleGAN in this experiment as supplemental datasets. In addition, we released the method as a demo application and collected 100 line drawings created by users. Some of these images were accepted for publication.
-
-\begin{Figure}
-\scalebox{0.6}{
-\begin{tabular}{c|c|c|c|c|c|c|c|c}
-                   & \textbf{Ours}   & pSp    & s2p   & Tanpopo & Satsuki & Canna & webtoon & clipstudio \\
-\hline
-\textbf{Aesthetic WP↑} & 38.00  & 100-x  & 24.00 & 4.00    & 10.00   & 6.00  & 6.00    & 6.00       \\
-% " & ".join([f"{float(t.strip())**.5:.2f}" for t in txt.replace("&", "\n").split("\n")])
-%DF-MSE↓            & 148.05 & 183.91 & 19.72 & 31.87   & 3.12    & 49.00 & 17.34   & 7.31       \\
-\textbf{DF-RMSE↓} & 12.17 & 13.56 & 4.44 & 5.65 & 1.77 & 7.00 & 4.16 & 2.70 \\
-\hline
-SSIM↑              & 0.49   & 0.50   & 0.70  & 0.73    & 0.67    & 0.65  & 0.65    & 0.68       \\
-PSNR↑              & 11.43  & 11.59  & 12.73 & 14.01   & 11.70   & 11.74 & 11.53   & 11.80      \\
-\end{tabular}
-}
-\beforecaption
-\captionof{table}{Quantitative evaluation results}
-\label{tab:metrics}
-\end{Figure}
-Quantitative evaluation results showed that the baseline method significantly improved the aesthetic score compared to previous methods. However, on the other hand, the tracking of the input line drawings became worse. The proposed method improves the followability of the input line art with only slightly deteriorating the aesthetic score compared to the baseline method.
+To evaluate the performance of the proposed method, we conducted experiments comparing it with the baseline method, the proposed method, and a coloring method already in use in practice.
+We prepared 80k+2k training/test dataset by the following procedure: removing images using a tag that was not appropriate for research, whitening the background, aligning faces, and extracting line drawings from the Danbooru2020 dataset. Since obtaining permission to publish these images in a paper was difficult, We prepared 100 pairs of images generated by StyleGAN in this experiment as supplemental datasets. In addition, we released the method as a demo application and collected 100 line drawings created by users. Some of these images were accepted for publication.
+%データセットの説明が長すぎるのでトータルで何枚くらいでいい
+Quantitative evaluation results~\ref{tab:compare} showed that the baseline method significantly improved the aesthetic score compared to previous methods. However, on the other hand, the tracking of the input line drawings became worse. The proposed method improves the followability of the input line art with only slightly deteriorating the aesthetic score compared to the baseline method.
 
 \beforesection
 \section*{Conclusions}
 \aftersection
-
+% we also show が多すぎ
+%これを
+% 我々の提案手法は〇〇の両立を達成した
 This research tackled line art colorization tasks and improved the follow-up to the input line drawing while maintaining the aesthetic quality of the coloring result.
-In the camera-ready paper, we describe a quantitative evaluation of a test dataset. We also show that our method is effective in coloring on-the-wild line drawings created by the user, with high followability to the input line drawing and aesthetic line drawing coloring. We also show that the method can manipulate attributes such as gender and age when coloring line drawings by utilizing the latent space image editing feature of StyleGAN.
-
-% Reference
-%\begin{thebibliography}{9}
-%\bibitem{psp}
-%Richardson, et al., "Encoding in Style: a StyleGAN Encoder for Image-to-Image Translation", Proceedings of Computer Vision and Pattern Recognition, 2021. 
-%\end{thebibliography}
+In the camera-ready paper, we describe a quantitative evaluation of a test dataset. We also show that our method is effective in coloring on-the-wild line drawings created by the user, with high followability to the input line drawing and aesthetic line drawing coloring.
+%We also show that the method can manipulate attributes such as gender and age when coloring line drawings by utilizing the latent space image editing feature of StyleGAN.
+\vspace{-10pt}
+\begin{thebibliography}{2}
+\bibitem{psp}
+Richardson, et al., "Encoding in Style: a StyleGAN Encoder for Image-to-Image Translation", Proceedings of CVPR2021. 
+\bibitem{aes}
+C. Schuhmann, et al., "LAION-5B: An open large-scale dataset for training next generation image-text models", Proceedings of NeurIPS2022. 
+\end{thebibliography}
 
 %methodsがながい
 %resultsの表上を半分にして考察を伸ばす(具体的な例をあげる)
